@@ -1,45 +1,53 @@
 'use strict';
-const message = document.querySelector('.message');
-const score = document.querySelector('.score');
+const again = document.querySelector('.again');
 const number = document.querySelector('.number');
 const inputField = document.querySelector('.guess');
 const inputValue = document.querySelector('.check');
-const higscoreDisplay = document.querySelector('.highscore');
-const again = document.querySelector('.again');
-function randomNumberGenerator() {
+const message = document.querySelector('.message');
+const score = document.querySelector('.score');
+const displayHighScore = document.querySelector('.highscore');
+let highScore = 0;
+
+function generateRandomNumber() {
   return Math.trunc(Math.random() * 20) + 1;
 }
 
-let highScore = 0;
+let randomNumber = generateRandomNumber();
+
 function decreaseScore() {
-  let userScore = score.innerHTML;
-  let convertToInt = parseInt(userScore);
-  convertToInt--;
-  score.innerHTML = convertToInt;
-  return convertToInt;
+  const getScore = score.textContent;
+  let convertInt = parseFloat(getScore);
+  convertInt--;
+  score.textContent = convertInt;
+  return convertInt;
 }
 
-let randomNumber = randomNumberGenerator();
+function generalReset() {
+  number.textContent = '?';
+  inputField.value = '';
+  score.textContent = 20;
+  message.textContent = 'Start guessing';
+}
 
 function makeComparisons(inputNumber) {
   if (inputNumber.value === '') {
     message.textContent = 'Please Enter A Valid Number';
     decreaseScore();
   } else if (inputNumber.value !== '') {
-    let userInput = parseFloat(inputNumber.value);
+    let userInput = parseInt(inputNumber.value);
     if (randomNumber > userInput) {
       message.textContent = 'Guess Higher';
       decreaseScore();
     } else if (randomNumber < userInput) {
       message.textContent = 'Guess Lower';
       decreaseScore();
-    } else if (randomNumber === userInput) {
-      const currentHighScore = `${decreaseScore() + 1}`;
+    } else if (userInput === randomNumber) {
+      let currentHighScore = `${decreaseScore()}`;
       message.textContent = 'Correct ❤️';
       number.textContent = randomNumber;
       if (currentHighScore > highScore) {
         highScore = currentHighScore;
-        higscoreDisplay.textContent = highScore;
+        displayHighScore.textContent = highScore;
       }
       setTimeout(generalReset, 10000);
     }
@@ -49,16 +57,8 @@ function makeComparisons(inputNumber) {
 inputValue.addEventListener('click', function () {
   makeComparisons(inputField);
 });
-
-function generalReset() {
-  score.textContent = 20;
-  message.innerHTML = 'Start Guessing...';
-  inputField.value = '';
-  number.textContent = '?';
-  randomNumber = randomNumberGenerator();
-}
 again.addEventListener('click', generalReset);
-document.addEventListener('keydown', function checkValueOnEnter(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     makeComparisons(inputField);
   }
