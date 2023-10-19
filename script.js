@@ -1,4 +1,3 @@
-
 'use strict';
 const again = document.querySelector('.again');
 const number = document.querySelector('.number');
@@ -7,6 +6,7 @@ const inputValue = document.querySelector('.check');
 const message = document.querySelector('.message');
 const score = document.querySelector('.score');
 const displayHighScore = document.querySelector('.highscore');
+// Checks If There's an Highscore already, if there isn't it'll be set to 0 by default.
 let highScore = parseInt(localStorage.getItem('highScore')) || 0;
 const body = document.querySelector('body');
 
@@ -36,12 +36,22 @@ function saveHighScore() {
   localStorage.setItem('highScore', highScore);
 }
 
+function checkLeastScore(score) {
+  if (score <= 0) {
+    message.textContent = `You Lost The Game`;
+    body.style.backgroundColor = 'orange';
+    setTimeout(generalReset, 5000);
+  }
+}
+
 function makeComparisons(inputNumber) {
   if (inputNumber.value === '') {
     message.textContent = 'Please Enter A Valid Number';
     decreaseScore();
+    checkLeastScore(decreaseScore());
   } else if (inputNumber.value !== '') {
     let userInput = parseInt(inputNumber.value);
+
     if (randomNumber > userInput) {
       message.textContent = 'Guess Higher';
       decreaseScore();
@@ -60,6 +70,7 @@ function makeComparisons(inputNumber) {
       }
       setTimeout(generalReset, 10000);
     }
+    checkLeastScore(decreaseScore());
   }
 }
 // Set initial high score display
