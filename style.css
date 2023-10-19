@@ -117,3 +117,18 @@ h1 {
 .label-score {
   margin-bottom: 2rem;
 }
+@media (max-width: 784px) {
+  html {
+    font-size: 50%;
+  }
+}
+@media (max-width: 544px) {
+  html {
+    font-size: 40%;
+  }
+}
+@media (max-width: 406px) {
+  html {
+    font-size: 30%;
+  }
+}
