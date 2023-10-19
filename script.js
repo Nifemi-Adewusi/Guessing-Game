@@ -1,3 +1,4 @@
+
 'use strict';
 const again = document.querySelector('.again');
 const number = document.querySelector('.number');
@@ -6,7 +7,8 @@ const inputValue = document.querySelector('.check');
 const message = document.querySelector('.message');
 const score = document.querySelector('.score');
 const displayHighScore = document.querySelector('.highscore');
-let highScore = 0;
+let highScore = parseInt(localStorage.getItem('highScore')) || 0;
+const body = document.querySelector('body');
 
 function generateRandomNumber() {
   return Math.trunc(Math.random() * 20) + 1;
@@ -27,6 +29,11 @@ function generalReset() {
   inputField.value = '';
   score.textContent = 20;
   message.textContent = 'Start guessing';
+  body.style.backgroundColor = '#222';
+}
+
+function saveHighScore() {
+  localStorage.setItem('highScore', highScore);
 }
 
 function makeComparisons(inputNumber) {
@@ -48,11 +55,18 @@ function makeComparisons(inputNumber) {
       if (currentHighScore > highScore) {
         highScore = currentHighScore;
         displayHighScore.textContent = highScore;
+        body.style.backgroundColor = 'lightgreen';
+        saveHighScore();
       }
       setTimeout(generalReset, 10000);
     }
   }
 }
+// Set initial high score display
+displayHighScore.textContent = highScore;
+
+// Make sure to save high score on initial page load
+saveHighScore();
 
 inputValue.addEventListener('click', function () {
   makeComparisons(inputField);
