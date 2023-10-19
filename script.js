@@ -65,12 +65,13 @@ function makeComparisons(inputNumber) {
       let currentHighScore = `${decreaseScore()}`;
       message.textContent = 'Correct ❤️';
       number.textContent = randomNumber;
+      body.style.backgroundColor = 'lightgreen';
+
       playAudio('Audio/success.mp3');
 
       if (currentHighScore > highScore) {
         highScore = currentHighScore;
         displayHighScore.textContent = highScore;
-        body.style.backgroundColor = 'lightgreen';
         saveHighScore();
       }
       setTimeout(generalReset, 10000);
