@@ -14,6 +14,10 @@ function generateRandomNumber() {
   return Math.trunc(Math.random() * 20) + 1;
 }
 
+function playAudio(audioFile) {
+  new Audio(audioFile).play();
+}
+
 let randomNumber = generateRandomNumber();
 
 function decreaseScore() {
@@ -39,6 +43,7 @@ function saveHighScore() {
 function checkLeastScore(score) {
   if (score <= 0) {
     message.textContent = `You Lost The Game`;
+    playAudio('Audio/fail.mp3');
     body.style.backgroundColor = 'orange';
     setTimeout(generalReset, 5000);
   }
@@ -47,21 +52,21 @@ function checkLeastScore(score) {
 function makeComparisons(inputNumber) {
   if (inputNumber.value === '') {
     message.textContent = 'Please Enter A Valid Number';
-    decreaseScore();
-    checkLeastScore(decreaseScore());
+    const updatedScore = decreaseScore();
+    checkLeastScore(updatedScore);
   } else if (inputNumber.value !== '') {
     let userInput = parseInt(inputNumber.value);
 
     if (randomNumber > userInput) {
       message.textContent = 'Guess Higher';
-      decreaseScore();
     } else if (randomNumber < userInput) {
       message.textContent = 'Guess Lower';
-      decreaseScore();
     } else if (userInput === randomNumber) {
       let currentHighScore = `${decreaseScore()}`;
       message.textContent = 'Correct ❤️';
       number.textContent = randomNumber;
+      playAudio('Audio/success.mp3');
+
       if (currentHighScore > highScore) {
         highScore = currentHighScore;
         displayHighScore.textContent = highScore;
